@@ -1,27 +1,33 @@
-console.log(document.getElementById("btn-avancar"));
 const btnAvancar = document.getElementById("btn-avancar");
-const btnVoltar = document.getElementById("btn-voltar")
+const btnVoltar = document.getElementById("btn-voltar");
 let cartaoAtual = 0;
 const cartoes = document.querySelectorAll(".cartao");
-btnAvancar.addEventListener("click", function () {
-    if (cartaoAtual === cartoes.length - 1) return;
-    const cartaoSelecionado = document.querySelector(".selecionado");
-    cartaoSelecionado.classList.remove("selecionado");
-    console.log(cartoes);
-    cartaoAtual++;
-    cartoes[cartaoAtual].classList.add("selecionado");
 
+function mostrarCartao(indice) {
+  cartoes.forEach((cartao, i) => {
+    cartao.classList.toggle("selecionado", i === indice);
+  });
+}
 
-
+btnAvancar.addEventListener("click", () => {
+  cartaoAtual = (cartaoAtual + 1) % cartoes.length; // Lógica de looping
+  mostrarCartao(cartaoAtual);
 });
-btnVoltar.addEventListener("click", function () {
-    if (cartaoAtual === 0) return;
-    const cartaoSelecionado = document.querySelector(".selecionado");
-    cartaoSelecionado.classList.remove("selecionado");
-    console.log(cartoes);
-    cartaoAtual--;
-    cartoes[cartaoAtual].classList.add("selecionado");
 
+btnVoltar.addEventListener("click", () => {
+  cartaoAtual = (cartaoAtual - 1 + cartoes.length) % cartoes.length; // Lógica de looping
+  mostrarCartao(cartaoAtual);
+});
 
+document.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowLeft") {
+    cartaoAtual = (cartaoAtual - 1 + cartoes.length) % cartoes.length; // Lógica de looping
+    mostrarCartao(cartaoAtual);
+  } else if (event.key === "ArrowRight") {
+    cartaoAtual = (cartaoAtual + 1) % cartoes.length; // Lógica de looping
+    mostrarCartao(cartaoAtual);
+  }
+});
 
-})
+// Mostrar o primeiro cartão inicialmente
+mostrarCartao(cartaoAtual);
